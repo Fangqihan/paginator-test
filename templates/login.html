@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录页面</title>
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <style>
+        .valid{
+            vertical-align: middle;
+        }
+        .form-group{
+            margin-bottom: 10px;
+        }
+        .error_tips{
+            color: red;
+            font-size: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <form method="post" action="" class="post_form">
+          <div class="form-group">
+            <label for="username">用户名</label>
+            <input type="text" class="form-control" id="username" name="username" >
+              <span id="error_username" class="error_tips"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="password">密码</label>
+            <input type="password" class="form-control" id="password" name="password">
+              <span id="error_password" class="error_tips"></span>
+
+          </div>
+
+            <div class="form-group">
+                <label for="valid_code">验证码</label>
+                <input type="text" class="valid" id="valid_code" name="valid_code" >
+                <img src="/captcha/" width="130" height="" class="valid_img valid">
+                <a class="refresh valid">刷新</a>
+                <span id="error_valid_code" class="error_tips"></span>
+
+            </div>
+
+            <p class="error_tips" id="error_tips"></p>
+
+            <input type="button" value="提交" id="ajax_submit_btn">
+
+            <input type="reset" style="display: none" id="reset_btn">
+            <input hidden value="{{ path }}" id="path">
+
+            {% csrf_token %}
+    </form>
+</body>
+
+<script>
+    {#    自行构造data信息#}
+    $('#ajax_submit_btn').click(function () {
+        // 每次提交都会清空之间的错误信息
+        　$('#error_username').text('');
+       　$('#error_password').text('');
+       　$('#error_valid_code').text('');
+       　$('#error_tips').text('');
+
+       // ajax发送数据
+        $.ajax({
+           url:'/login/',
+           type:"POST",
+           data: {
+               'username':$('#username').val(), 'password': $("#password").val(),
+               'valid_code':$('#valid_code').val(), 'path':$('#path').val(),
+               "csrfmiddlewaretoken":$('[name="csrfmiddlewaretoken"]').val()
+           },
+           success:function (data) {
+               if(data.status == 'success'){
+                   window.location.href= 'https://www.baidu.com';
+
+               }
+               else if(data.status == 'fail'){
+                    console.log(data.errors)
+                   $('#error_username').text(data.errors.username);
+                   $('#error_password').text(data.errors.password);
+                   $('#error_valid_code').text(data.errors.valid_code);
+                   $('#error_username').text(data.errors.error_msg);
+               }
+           }
+       })
+    });
+
+    // 验证码刷新
+    $('.refresh').click(function () {
+        // 取到img标签的DOM对象
+        $('.valid_img')[0].src+='?'
+    });
+</script>
+</html>

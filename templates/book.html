@@ -1,0 +1,52 @@
+ <!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .pagination li{
+            float: left;
+            list-style: none;
+            margin-right: 5px;
+        }
+    </style>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+</head>
+<body>
+    <ul>
+        {% for book in page_data %}
+            <li>{{ forloop.counter }}&nbsp;&nbsp;&nbsp;{{ book.title }}&nbsp;&nbsp;&nbsp;{{ book.price }}</li>
+        {% endfor %}
+    </ul>
+
+    
+<nav aria-label="Page navigation">
+
+  <ul class="pagination">
+    {# 判断是否是第一页 #}
+{#    {% if book_list.has_previous %}#}
+        {# 有上一页就不是第一页 #}
+{#        <li><a href="?page={{ book_list.previous_page_number }}" aria-label="Previous">上一页</a></li>#}
+{#        {% else %}#}
+        {#  第一页就禁用, 不能点击 #}
+{#        <li><a class="disabled" aria-label="Previous">上一页</a></li>#}
+{#    {% endif %}#}
+{##}
+{#      {% for i in p.page_range %}#}
+{#        <li><a href="?page={{ i }}">{{ i }}</a></li>#}
+{#      {% endfor %}#}
+{##}
+{#    {% if book_list.has_next %}#}
+{#        <li><a href="?page={{ book_list.next_page_number }}" aria-label="Next">下一页</a></li>#}
+{#    {% else %}#}
+{#        <li><a class="disabled" aria-label="Previous">下一页</a></li>#}
+{#    {% endif %}#}
+
+      {{ pager_str|safe }}
+  </ul>
+</nav>
+
+</body>
+</html>

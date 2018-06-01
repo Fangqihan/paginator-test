@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页面</title>
+</head>
+<body>
+
+<h1>当前用户{{ request.user.username }}</h1>
+
+<a href="{% url 'forget_pwd' %}">忘记密码</a>
+<a href="{% url 'login' %}">登录</a>
+<a href="{% url 'register' %}">注册</a>
+
+</body>
+</html>
